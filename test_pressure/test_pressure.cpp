@@ -70,7 +70,8 @@ int main() {
         }
         auto finish = std::chrono::high_resolution_clock::now(); 
         std::chrono::duration<double> elapsed = finish - start;
-        std::cout << "insert elapsed:" << elapsed.count() << std::endl;
+        std::cout << "insert time elapsed:" << elapsed.count() << std::endl;
+        std::cout << "insert QPS:" << TEST_COUNT / elapsed.count() << std::endl;
     }
     //skipList.display();
 
@@ -101,7 +102,8 @@ int main() {
 
     //     auto finish = std::chrono::high_resolution_clock::now(); 
     //     std::chrono::duration<double> elapsed = finish - start;
-    //     std::cout << "get elapsed:" << elapsed.count() << std::endl;
+    //     std::cout << "query time elapsed:" << elapsed.count() << std::endl;
+    //     std::cout << "insert QPS:" << TEST_COUNT / elapsed.count() << std::endl;
     // }
 
 	pthread_exit(NULL);
