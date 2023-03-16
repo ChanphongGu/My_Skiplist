@@ -72,7 +72,7 @@ int main() {
         std::chrono::duration<double> elapsed = finish - start;
         std::cout << "insert elapsed:" << elapsed.count() << std::endl;
     }
-    skipList.display();
+    //skipList.display();
 
     //测试读性能
     // {

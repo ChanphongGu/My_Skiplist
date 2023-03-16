@@ -238,11 +238,8 @@ bool SkipList<K, V>::insert(K key, V val) {
 
     //为插入节点选择合适位置
     Node<K, V>* cur = head;
-    Node<K, V>* update[height + 1]; //存储该节点在某一层插入位置的前一个位置
-    memset(update, 0, sizeof(Node<K, V>*) * (height + 1));
-
-    //生成节点
-    Node<K, V>* node = new Node<K, V>(key, val, height);
+    Node<K, V>* update[max_height + 1]; //存储该节点在某一层插入位置的前一个位置
+    memset(update, 0, sizeof(Node<K, V>*) * (max_height + 1));
     
     //最后处理在跳表层高一下的插入位置
     for (int i = level_height; i >= 0; i -- ) {
@@ -256,7 +253,6 @@ bool SkipList<K, V>::insert(K key, V val) {
     cur = cur->forward[0];
     if (cur && cur->getKey() == key) {
         std::cout << "SkipList: insert fail! Key exists!" << std::endl;
-        delete node;
         //解除锁
         locker.unlock();
         return false;
@@ -267,6 +263,8 @@ bool SkipList<K, V>::insert(K key, V val) {
         update[i] = head;
     }
 
+    //生成节点
+    Node<K, V>* node = new Node<K, V>(key, val, height);
     //更新节点位置
     for (int i = 0; i <= height; i ++ ) {
         node->forward[i] = update[i]->forward[i];
@@ -291,8 +289,8 @@ bool SkipList<K, V>::remove(K key) {
     locker.lock();
     //获取key在0层的前一节点
     Node<K, V>* cur = head;
-    Node<K, V>* update[level_height + 1];
-    memset(update, 0, sizeof(Node<K, V>*) * (level_height + 1));
+    Node<K, V>* update[max_height + 1];
+    memset(update, 0, sizeof(Node<K, V>*) * (max_height + 1));
     for (int i = level_height; i >= 0; i -- ) {
         while (cur->forward[i] && cur->forward[i]->getKey() < key) {
             cur = cur->forward[i];
